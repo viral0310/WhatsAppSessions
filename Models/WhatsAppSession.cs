@@ -9,9 +9,9 @@ namespace WhatsAppSessionApi.Models
     public class WhatsAppSession
     {
         public int Id { get; set; }
-        public string SessionId { get; set; }
-        public string SessionPath { get; set; }
+        public string SessionId { get; set; } = string.Empty;
+        public string SessionPath { get; set; } = string.Empty;
         public bool IsLoggedIn { get; set; }
-        public string QrCodeFilePath { get; set; }
+        public string QrCodeFilePath { get; set; } = string.Empty;
     }
 }

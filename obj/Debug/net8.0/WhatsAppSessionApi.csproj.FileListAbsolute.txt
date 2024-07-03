@@ -141,3 +141,4 @@ D:\CLI\WhatsAppSessionApi\obj\Debug\net8.0\refint\WhatsAppSessionApi.dll
 D:\CLI\WhatsAppSessionApi\obj\Debug\net8.0\WhatsAppSessionApi.pdb
 D:\CLI\WhatsAppSessionApi\obj\Debug\net8.0\WhatsAppSessionApi.genruntimeconfig.cache
 D:\CLI\WhatsAppSessionApi\obj\Debug\net8.0\ref\WhatsAppSessionApi.dll
+D:\CLI\WhatsAppSessionApi\obj\Debug\net8.0\WhatsAppSessionApi.sourcelink.json
