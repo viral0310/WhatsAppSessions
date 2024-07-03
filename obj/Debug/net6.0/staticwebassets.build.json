@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "n0Dn07luD+/ejHk9PoJYPUrJ2e4kfRbEfV1gHTurXbw=",
+  "Source": "WhatsAppSessionApi",
+  "BasePath": "_content/WhatsAppSessionApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
