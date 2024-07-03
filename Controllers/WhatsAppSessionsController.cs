@@ -1,11 +1,9 @@
 // Controllers/WhatsAppSessionsController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WhatsAppSessionApi.Data;
 using WhatsAppSessionApi.Models;
+using WhatsAppSessionApi.Repositories;
 
 namespace WhatsAppSessionApi.Controllers
 {
@@ -13,38 +11,36 @@ namespace WhatsAppSessionApi.Controllers
     [ApiController]
     public class WhatsAppSessionsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IWhatsAppSessionRepository _repository;
 
-        public WhatsAppSessionsController(AppDbContext context)
+        public WhatsAppSessionsController(IWhatsAppSessionRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WhatsAppSession>>> GetWhatsAppSessions()
         {
-            return await _context.WhatsAppSessions.ToListAsync();
+            return Ok(await _repository.GetAllAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<WhatsAppSession>> GetWhatsAppSession(int id)
         {
-            var session = await _context.WhatsAppSessions.FindAsync(id);
+            var session = await _repository.GetByIdAsync(id);
 
             if (session == null)
             {
                 return NotFound();
             }
 
-            return session;
+            return Ok(session);
         }
 
         [HttpPost]
         public async Task<ActionResult<WhatsAppSession>> PostWhatsAppSession(WhatsAppSession session)
         {
-            _context.WhatsAppSessions.Add(session);
-            await _context.SaveChangesAsync();
-
+            await _repository.AddAsync(session);
             return CreatedAtAction(nameof(GetWhatsAppSession), new { id = session.Id }, session);
         }
 
@@ -56,45 +52,25 @@ namespace WhatsAppSessionApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(session).State = EntityState.Modified;
-
-            try
+            if (!await _repository.ExistsAsync(id))
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WhatsAppSessionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
+            await _repository.UpdateAsync(session);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWhatsAppSession(int id)
         {
-            var session = await _context.WhatsAppSessions.FindAsync(id);
-            if (session == null)
+            if (!await _repository.ExistsAsync(id))
             {
                 return NotFound();
             }
 
-            _context.WhatsAppSessions.Remove(session);
-            await _context.SaveChangesAsync();
-
+            await _repository.DeleteAsync(id);
             return NoContent();
-        }
-
-        private bool WhatsAppSessionExists(int id)
-        {
-            return _context.WhatsAppSessions.Any(e => e.Id == id);
         }
     }
 }
